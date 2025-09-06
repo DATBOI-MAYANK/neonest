@@ -2,6 +2,7 @@ import User from "@/app/models/User.model";
 import connectDB from "@/lib/connectDB";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import argon2 from "argon2";
 
 export async function POST(req) {
   await connectDB();
@@ -26,7 +27,7 @@ export async function POST(req) {
     //   );
     // }
     if (userExists.password.startsWith("$2")) {
-      const match = await bcrypt.compare(password, userExists.password);
+      const match = await bcryptjs.compare(password, userExists.password);
       if (!match) {
         return Response.json({ error: "wrong password" }, { status: 400 });
       }
